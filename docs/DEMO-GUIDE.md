@@ -7,36 +7,54 @@ One repo, two sessions. Everything below runs off this repository. The golden ru
 
 ## Session 1 · Aug 5 — "Building with GitHub Copilot: The AI-Native Developer"
 
-### Run-of-show
-1. **Hook (3 min)** — Open the app (`index.html`). "This is a working intake front door.
-   You're going to learn how to build things like this, fast."
-2. **Copilot surface tour (10 min)** — completions, chat, edits/agent mode, coding agent.
-3. **Comprehend inherited code (Acquire edge, ~7 min)** — open `legacy/triage-rules.js`.
-   It's deliberately cryptic and undocumented. Use **Copilot Chat → /explain** to reverse it,
-   then ask Copilot to add doc comments. This is the "understand acquired systems" moment.
-4. **Grounding (7 min)** — show `.github/copilot-instructions.md` and how it shapes output.
-5. **Best-in-class prompting (8 min)** — 4 patterns, quick before/after in chat.
-6. **🔴 Live build (18 min)** — the seeded issue (below): add a **search/filter bar** to the
-   queue. issue → chat plan → completions/edits build → delegate to coding agent → PR.
-7. **Close (4 min)** — "This is day one of your hackathon project."
+### Run-of-show (browser-first — no IDE required)
+> **Primary surface: the Copilot coding agent on github.com.** Everything happens in a
+> browser, which suits the mixed audience (PMs, UX, data, engineers). The CLI and IDE are
+> optional "power-user" alternates (see end of this section).
 
-### Seed issue (create in the repo before the session)
+1. **Hook (3 min)** — Open the live app (https://mdiiacovo.github.io/ai-native-intake-demo/).
+   "This is a working intake front door. You're going to learn how to build things like this,
+   fast — without even opening an editor."
+2. **Copilot surface tour (10 min)** — completions, chat, edits/agent mode, and the coding
+   agent. Frame each by the job it does, not the feature name.
+3. **Comprehend inherited code (Acquire edge, ~7 min)** — open `legacy/triage-rules.js` on
+   github.com. It's deliberately cryptic and undocumented. Use **Copilot Chat (github.com) →
+   "explain this file"** to reverse it, then ask it to add doc comments. The "understand
+   acquired systems" moment.
+4. **Grounding (7 min)** — show `.github/copilot-instructions.md` and how it shapes output.
+5. **Best-in-class prompting (8 min)** — 4 patterns, quick before/after in Copilot Chat.
+6. **🔴 Live build (18 min)** — the whole loop in the browser:
+   - Open **Issue #1** ("Add search + risk filter to the request queue")
+   - **Assign it to Copilot** → the coding agent starts working on its own
+   - It opens a **pull request**; walk the diff and its description
+   - **Merge** → GitHub Pages **auto-deploys** → refresh the live URL, feature is live
+7. **Close (4 min)** — "That's issue → PR → shipped, no editor. This is day one of your
+   hackathon project."
+
+### Seed issue (already created — Issue #1)
 > **Title:** Add search + risk filter to the request queue
 > **Body:** The queue has no way to find a request. Add (1) a text search box that filters by
 > title/team, and (2) a dropdown to filter by risk level (low/medium/high). Keep it
 > zero-dependency and match the existing dark theme. Update the queue count to reflect
 > filtered results.
 
-### Live-build prompt sequence
-1. Chat: *"Read this repo's copilot-instructions and the queue rendering in app.js. Propose a
-   plan to add search + risk filtering without adding dependencies."*
-2. Edits: *"Implement the plan: add the search box and risk dropdown to index.html and wire up
-   filtering in app.js."*
-3. Delegate the polish to the **coding agent** via the issue → let it open a PR.
+### How to run the live build (github.com)
+1. Repo → **Issues → #1** → in the sidebar, **Assignees → Copilot**.
+2. Copilot posts progress and opens a PR (typically a few minutes — start it early / have a
+   completed run ready, see fallback).
+3. Open the PR, skim the diff, **Merge**.
+4. Switch to the live URL and refresh — search + filter are now live (Pages auto-deploy).
 
-### Fallback if the agent stalls
-A **pre-baked PR** named `demo/search-filter` already exists. Open it and narrate: "here's the
-result the agent produces." Never debug live.
+### Fallbacks (never debug live)
+- **If the agent is slow:** kick off the assignment *before* the session or during the surface
+  tour so the PR is ready by step 6.
+- **If the agent fails entirely:** a **pre-baked PR** (`demo/search-filter`, PR #2) already
+  exists — open it and narrate it as "the result the agent produces," then merge that instead.
+- **Ultimate backup:** a screen recording of a successful agent run.
+
+### Optional power-user alternates (only if the room is technical)
+- **Copilot CLI:** run the same issue from the terminal for "watch the agent work" energy.
+- **IDE:** chat → edits → completions for the fullest control. Least accessible; use sparingly.
 
 ---
 
