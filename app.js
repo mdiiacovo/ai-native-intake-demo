@@ -1,0 +1,93 @@
+// app.js — Intake Front Door demo
+// Client-side app. Falls back to bundled mock data when the mock API isn't running.
+
+const STORAGE_KEY = "intake_requests";
+
+async function loadRequests() {
+  // Prefer the mock API if available, else fall back to local storage / seed file.
+  try {
+    const res = await fetch("http://localhost:4000/requests", { mode: "cors" });
+    if (res.ok) return await res.json();
+  } catch (_) {
+    /* mock API not running — fall back */
+  }
+  const cached = localStorage.getItem(STORAGE_KEY);
+  if (cached) return JSON.parse(cached);
+  const seed = await fetch("data/requests.json").then((r) => r.json());
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(seed));
+  return seed;
+}
+
+function saveRequests(list) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+}
+
+function renderQueue(list) {
+  const container = document.getElementById("queue-list");
+  document.getElementById("queue-count").textContent = list.length;
+  container.innerHTML = "";
+  list
+    .slice()
+    .reverse()
+    .forEach((r) => {
+      const el = document.createElement("div");
+      el.className = "request";
+      // NOTE: renders user-provided fields directly into innerHTML.
+      el.innerHTML = `
+        <div class="req-top">
+          <div>
+            <div class="req-title">${r.title}</div>
+            <div class="req-team">${r.team}</div>
+          </div>
+          <span class="pill risk-${r.risk}">${r.risk} risk</span>
+        </div>
+        <div class="req-meta">
+          <span class="pill cat">${r.category}</span>
+          <span class="pill stage">${r.stage}</span>
+          <span class="pill cat">$${Number(r.cost || 0).toLocaleString()}</span>
+        </div>`;
+      container.appendChild(el);
+    });
+}
+
+function showTriage(result) {
+  const box = document.getElementById("triage-result");
+  box.classList.remove("hidden");
+  box.innerHTML = `
+    <h3>Auto-triage result</h3>
+    <div class="row"><span>Risk level</span><strong>${result.risk}</strong></div>
+    <div class="row"><span>Score</span><strong>${result.score}</strong></div>
+    <div class="row"><span>Lifecycle stage</span><strong>${result.stage}</strong></div>`;
+}
+
+async function init() {
+  let requests = await loadRequests();
+  renderQueue(requests);
+
+  document.getElementById("intake-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const data = Object.fromEntries(new FormData(form).entries());
+    const triage = window.__triage(data); // from legacy/triage-rules.js
+    const record = {
+      id: Date.now(),
+      title: data.title,
+      team: data.team,
+      category: data.category,
+      cost: data.cost,
+      sensitive: data.sensitive,
+      justification: data.justification,
+      risk: triage.risk,
+      score: triage.score,
+      stage: triage.stage,
+      createdAt: new Date().toISOString(),
+    };
+    requests.push(record);
+    saveRequests(requests);
+    renderQueue(requests);
+    showTriage(triage);
+    form.reset();
+  });
+}
+
+init();

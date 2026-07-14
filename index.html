@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Intake Front Door — AI-Native Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="dot"></span>
+      <span>Intake Front Door</span>
+    </div>
+    <nav>
+      <a href="#new" class="nav-link">New Request</a>
+      <a href="#queue" class="nav-link">Queue</a>
+      <a href="README.md" class="nav-link">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>The AI-native <span>intake front door</span></h1>
+      <p class="subtitle">
+        One place to request software, vendors, and tools — auto-triaged by risk and
+        category, tracked from <strong>Acquire</strong> to <strong>Decommission</strong>.
+        No spreadsheets. No email threads.
+      </p>
+    </section>
+
+    <div class="grid">
+      <!-- New request form -->
+      <section id="new" class="card">
+        <h2>Submit a request</h2>
+        <form id="intake-form">
+          <label>
+            Title
+            <input name="title" required placeholder="e.g. Access to Figma for design team" />
+          </label>
+          <label>
+            Requesting team
+            <input name="team" required placeholder="e.g. Digital Experience" />
+          </label>
+          <label>
+            Category
+            <select name="category" required>
+              <option value="">Select…</option>
+              <option>Software / SaaS</option>
+              <option>Vendor / Services</option>
+              <option>Data platform</option>
+              <option>Infrastructure</option>
+            </select>
+          </label>
+          <label>
+            Estimated annual cost (USD)
+            <input name="cost" type="number" min="0" step="100" placeholder="12000" />
+          </label>
+          <label>
+            Handles sensitive data?
+            <select name="sensitive" required>
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </label>
+          <label>
+            Business justification
+            <textarea name="justification" rows="3" placeholder="What problem does this solve?"></textarea>
+          </label>
+          <button type="submit">Submit &amp; auto-triage</button>
+        </form>
+        <div id="triage-result" class="triage-result hidden"></div>
+      </section>
+
+      <!-- Queue -->
+      <section id="queue" class="card">
+        <div class="queue-head">
+          <h2>Request queue</h2>
+          <span id="queue-count" class="badge">0</span>
+        </div>
+        <div id="queue-list" class="queue-list"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    Demo app for GitHub Copilot enablement · not a real HP system · illustrative only
+  </footer>
+
+  <script src="legacy/triage-rules.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

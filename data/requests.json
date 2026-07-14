@@ -1,0 +1,54 @@
+[
+  {
+    "id": 1,
+    "title": "Figma Enterprise for Design team",
+    "team": "Digital Experience",
+    "category": "Software / SaaS",
+    "cost": 24000,
+    "sensitive": "no",
+    "justification": "Standardize design tooling across the product org.",
+    "risk": "low",
+    "score": 8,
+    "stage": "Acquire",
+    "createdAt": "2026-06-30T14:12:00.000Z"
+  },
+  {
+    "id": 2,
+    "title": "Databricks workspace for analytics",
+    "team": "Data & AI",
+    "category": "Data platform",
+    "cost": 90000,
+    "sensitive": "yes",
+    "justification": "Consolidate ad-hoc notebooks onto a governed platform.",
+    "risk": "high",
+    "score": 85,
+    "stage": "Onboard",
+    "createdAt": "2026-07-02T09:40:00.000Z"
+  },
+  {
+    "id": 3,
+    "title": "Postman team plan",
+    "team": "Platform Engineering",
+    "category": "Software / SaaS",
+    "cost": 6000,
+    "sensitive": "no",
+    "justification": "API testing and shared collections.",
+    "risk": "low",
+    "score": 8,
+    "stage": "Acquire",
+    "createdAt": "2026-07-05T11:05:00.000Z"
+  },
+  {
+    "id": 4,
+    "title": "Contractor onboarding — Deloitte advisory",
+    "team": "IT Strategy",
+    "category": "Vendor / Services",
+    "cost": 150000,
+    "sensitive": "yes",
+    "justification": "A2D process modernization engagement.",
+    "risk": "high",
+    "score": 73,
+    "stage": "Acquire",
+    "createdAt": "2026-07-08T16:20:00.000Z"
+  }
+]
