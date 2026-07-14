@@ -60,9 +60,28 @@ function showTriage(result) {
     <div class="row"><span>Lifecycle stage</span><strong>${result.stage}</strong></div>`;
 }
 
+let allRequests = [];
+
+function applyFilters() {
+  const term = (document.getElementById("queue-search").value || "").toLowerCase();
+  const risk = document.getElementById("queue-risk").value;
+  const filtered = allRequests.filter((r) => {
+    const matchesTerm =
+      !term ||
+      (r.title || "").toLowerCase().includes(term) ||
+      (r.team || "").toLowerCase().includes(term);
+    const matchesRisk = !risk || r.risk === risk;
+    return matchesTerm && matchesRisk;
+  });
+  renderQueue(filtered);
+}
+
 async function init() {
-  let requests = await loadRequests();
-  renderQueue(requests);
+  allRequests = await loadRequests();
+  renderQueue(allRequests);
+
+  document.getElementById("queue-search").addEventListener("input", applyFilters);
+  document.getElementById("queue-risk").addEventListener("change", applyFilters);
 
   document.getElementById("intake-form").addEventListener("submit", (e) => {
     e.preventDefault();
@@ -82,9 +101,9 @@ async function init() {
       stage: triage.stage,
       createdAt: new Date().toISOString(),
     };
-    requests.push(record);
-    saveRequests(requests);
-    renderQueue(requests);
+    allRequests.push(record);
+    saveRequests(allRequests);
+    applyFilters();
     showTriage(triage);
     form.reset();
   });
