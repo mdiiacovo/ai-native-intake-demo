@@ -59,10 +59,14 @@ result the agent produces." Never debug live.
 8. **Close (4 min)** — the review → secure → measure → govern loop as a repeatable standard.
 
 ### The planted vulnerability (for the security demo)
-`app.js` → `renderQueue()` inserts `r.title` and `r.team` into `el.innerHTML` without
-escaping. Submitting a request with a title like `<img src=x onerror=alert(1)>` demonstrates
-the XSS. CodeQL's default JS query suite flags this as an incomplete/unsafe HTML sink.
-**Autofix / manual fix:** escape the values or use `textContent` / `createElement`.
+`app.js` → `showWelcomeBanner()` reads the `team` URL parameter and inserts it straight into
+`banner.innerHTML` without escaping. Opening a shareable link like
+`?team=<img src=x onerror=alert(1)>` triggers the XSS. This is a textbook reflected DOM XSS
+(`js/xss`) that CodeQL's `security-extended` suite reliably flags.
+**Autofix / manual fix:** use `textContent`, or escape the value before inserting.
+
+> There is also a secondary unsanitized sink in `renderQueue()` (user-submitted `title`/`team`
+> rendered via `innerHTML`) — a good "now find the others" follow-up once the first is fixed.
 
 ---
 

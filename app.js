@@ -50,6 +50,17 @@ function renderQueue(list) {
     });
 }
 
+// Shareable links can pre-fill the requesting team, e.g. ?team=Design%20Experience
+function showWelcomeBanner() {
+  const params = new URLSearchParams(window.location.search);
+  const team = params.get("team");
+  if (!team) return;
+  const banner = document.getElementById("welcome-banner");
+  banner.classList.remove("hidden");
+  // NOTE: renders a URL parameter directly into innerHTML.
+  banner.innerHTML = "Submitting a request on behalf of <strong>" + team + "</strong>";
+}
+
 function showTriage(result) {
   const box = document.getElementById("triage-result");
   box.classList.remove("hidden");
@@ -61,6 +72,7 @@ function showTriage(result) {
 }
 
 async function init() {
+  showWelcomeBanner();
   let requests = await loadRequests();
   renderQueue(requests);
 

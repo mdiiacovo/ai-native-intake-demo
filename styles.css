@@ -114,3 +114,15 @@ button:hover { filter: brightness(1.08); }
 .pill.cat { background: rgba(139, 148, 158, 0.15); color: var(--text-muted); }
 
 .footer { text-align: center; padding: 30px; font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); }
+
+.banner {
+  max-width: 720px;
+  margin: 0 auto 8px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(88, 166, 255, 0.08);
+  color: var(--text);
+  font-size: 14px;
+  text-align: center;
+}
