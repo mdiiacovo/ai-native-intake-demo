@@ -3,6 +3,10 @@
 // data. When served from localhost it will also use the optional mock API if present.
 
 const STORAGE_KEY = "intake_requests";
+const USD_FORMATTER = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
 
 // Only reach for the local mock API during local development. On GitHub Pages (or any
 // non-localhost host) we skip it entirely so there's no failed request or console noise.
@@ -30,7 +34,13 @@ function saveRequests(list) {
 
 function renderQueue(list) {
   const container = document.getElementById("queue-list");
+  const totalCostEl = document.getElementById("queue-total-cost");
   document.getElementById("queue-count").textContent = list.length;
+  const totalCost = list.reduce((sum, request) => {
+    const cost = Number(request.cost);
+    return Number.isFinite(cost) ? sum + cost : sum;
+  }, 0);
+  totalCostEl.textContent = `Total estimated annual cost: ${USD_FORMATTER.format(totalCost)}`;
   container.innerHTML = "";
   list
     .slice()

@@ -93,6 +93,11 @@ button:hover { filter: brightness(1.08); }
 
 .queue-head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
 .badge { background: rgba(88, 166, 255, 0.15); color: var(--blue); border-radius: 20px; padding: 2px 10px; font-size: 12px; font-weight: 600; }
+.queue-summary {
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
 
 .queue-list { display: flex; flex-direction: column; gap: 10px; max-height: 520px; overflow-y: auto; }
 .request {
