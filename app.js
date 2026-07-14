@@ -1,15 +1,21 @@
 // app.js — Intake Front Door demo
-// Client-side app. Falls back to bundled mock data when the mock API isn't running.
+// Client-side app. Runs entirely on static hosting (e.g. GitHub Pages) using bundled
+// data. When served from localhost it will also use the optional mock API if present.
 
 const STORAGE_KEY = "intake_requests";
 
+// Only reach for the local mock API during local development. On GitHub Pages (or any
+// non-localhost host) we skip it entirely so there's no failed request or console noise.
+const isLocalDev = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+
 async function loadRequests() {
-  // Prefer the mock API if available, else fall back to local storage / seed file.
-  try {
-    const res = await fetch("http://localhost:4000/requests", { mode: "cors" });
-    if (res.ok) return await res.json();
-  } catch (_) {
-    /* mock API not running — fall back */
+  if (isLocalDev) {
+    try {
+      const res = await fetch("http://localhost:4000/requests", { mode: "cors" });
+      if (res.ok) return await res.json();
+    } catch (_) {
+      /* mock API not running — fall back to bundled data */
+    }
   }
   const cached = localStorage.getItem(STORAGE_KEY);
   if (cached) return JSON.parse(cached);
