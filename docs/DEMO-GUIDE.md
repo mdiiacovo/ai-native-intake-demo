@@ -64,9 +64,11 @@ One repo, two sessions. Everything below runs off this repository. The golden ru
 1. **Recap (3 min)** — the app now has the search/filter feature from Aug 5.
 2. **AI code review (10 min)** — open the staged PR; run **Copilot code review**; walk the
    suggestions.
-3. **🔴 AI + security (15 min)** — CodeQL flags an **XSS sink** in `app.js` (`renderQueue`
-   builds `innerHTML` from unsanitized user input). Show the alert → **Copilot autofix** →
-   sanitize → re-scan clean. *This is the main "can break" moment; have the fix ready.*
+3. **🔴 AI + security (15 min)** — **no GHAS required.** Open `app.js` and ask **Copilot
+   Chat**: *"Review this file for security vulnerabilities."* It identifies the **XSS sink** in
+   `showWelcomeBanner()` (`innerHTML` built from an unsanitized URL param). Ask Copilot to fix
+   it (use `textContent` / escaping) → confirm the payload no longer fires. *Main "can break"
+   moment; have the fix diff ready.*
 4. **Agentic at scale (8 min)** — talk track: chaining/parallelizing agents + MCP/tools.
 5. **Economics (5 min)** — flip to the SDLC Experience `economics.html`: per-workflow credit
    cost + budget headroom. Pure clicking, no setup.
@@ -80,8 +82,13 @@ One repo, two sessions. Everything below runs off this repository. The golden ru
 `app.js` → `showWelcomeBanner()` reads the `team` URL parameter and inserts it straight into
 `banner.innerHTML` without escaping. Opening a shareable link like
 `?team=<img src=x onerror=alert(1)>` triggers the XSS. This is a textbook reflected DOM XSS
-(`js/xss`) that CodeQL's `security-extended` suite reliably flags.
-**Autofix / manual fix:** use `textContent`, or escape the value before inserting.
+that **Copilot Chat / code review reliably identifies** — no GHAS or CodeQL needed.
+**Fix:** use `textContent`, or escape the value before inserting.
+
+> Note: HPI does **not** have GHAS / Code Security, so this demo is intentionally
+> Copilot-native (Chat + code review), which works with just a Copilot license. A CodeQL
+> workflow still exists in `.github/workflows/` for reference, but the live demo does not
+> depend on it.
 
 > There is also a secondary unsanitized sink in `renderQueue()` (user-submitted `title`/`team`
 > rendered via `innerHTML`) — a good "now find the others" follow-up once the first is fixed.
@@ -92,7 +99,7 @@ One repo, two sessions. Everything below runs off this repository. The golden ru
 - [ ] Repo cloned locally, Copilot signed in, extensions working
 - [ ] Seed issue created (Session 1)
 - [ ] Pre-baked `demo/search-filter` PR created (Session 1 fallback)
-- [ ] Code scanning / CodeQL enabled and has run once (Session 2)
+- [ ] Confirmed Copilot Chat identifies the XSS in `showWelcomeBanner()` (Session 2)
 - [ ] A known-good XSS fix diff saved locally (Session 2 fallback)
 - [ ] SDLC Experience site open in a tab (economics page ready)
-- [ ] Screen recording of the agent run + autofix, as ultimate backup
+- [ ] Screen recording of the agent run + Copilot security fix, as ultimate backup
