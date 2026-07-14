@@ -78,6 +78,15 @@
           <h2>Request queue</h2>
           <span id="queue-count" class="badge">0</span>
         </div>
+        <div class="queue-filters">
+          <input id="queue-search" type="search" placeholder="Search by title or team…" />
+          <select id="queue-risk">
+            <option value="">All risk levels</option>
+            <option value="low">Low risk</option>
+            <option value="medium">Medium risk</option>
+            <option value="high">High risk</option>
+          </select>
+        </div>
         <div id="queue-list" class="queue-list"></div>
       </section>
     </div>
