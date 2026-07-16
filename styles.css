@@ -126,3 +126,7 @@ button:hover { filter: brightness(1.08); }
   font-size: 14px;
   text-align: center;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
