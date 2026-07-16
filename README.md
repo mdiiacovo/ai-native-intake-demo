@@ -7,7 +7,7 @@ automatic risk triage and lifecycle tracking from **Acquire → Onboard → Oper
 It replaces the classic "spreadsheet + email thread" intake process — the exact pain point
 teams are asked to modernize.
 
-> ⚠️ Illustrative demo only. Not a real HP system. Sample data is fictional.
+> ⚠️ Illustrative demo only. Not a real production system. Sample data is fictional.
 
 ## Run it
 
