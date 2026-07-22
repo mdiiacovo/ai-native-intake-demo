@@ -85,6 +85,15 @@ button {
   margin-top: 4px;
 }
 button:hover { filter: brightness(1.08); }
+.btn-secondary {
+  background: transparent;
+  color: var(--blue);
+  border: 1px solid var(--blue);
+  margin-top: 0;
+  margin-left: auto;
+  font-size: 12px;
+  padding: 4px 12px;
+}
 
 .triage-result { margin-top: 18px; padding: 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); }
 .triage-result h3 { font-size: 14px; color: var(--white); margin-bottom: 10px; }

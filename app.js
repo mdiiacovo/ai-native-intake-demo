@@ -4,6 +4,9 @@
 
 const STORAGE_KEY = "intake_requests";
 
+// Module-level list so all handlers (submit, export) always share the same state.
+let requests = [];
+
 // Only reach for the local mock API during local development. On GitHub Pages (or any
 // non-localhost host) we skip it entirely so there's no failed request or console noise.
 const isLocalDev = ["localhost", "127.0.0.1"].includes(window.location.hostname);
@@ -67,6 +70,31 @@ function showWelcomeBanner() {
   banner.innerHTML = "Submitting a request on behalf of <strong>" + team + "</strong>";
 }
 
+// Wraps a value in double-quotes and escapes any embedded double-quotes,
+// commas, and newlines so the output is a valid RFC 4180 CSV cell.
+function csvCell(value) {
+  const str = value == null ? "" : String(value);
+  return '"' + str.replace(/"/g, '""') + '"';
+}
+
+function exportCSV(list) {
+  const headers = ["id", "title", "team", "category", "cost", "sensitive",
+                   "justification", "risk", "score", "stage", "createdAt"];
+  const rows = [
+    headers.map(csvCell).join(","),
+    ...list.map((r) => headers.map((h) => csvCell(r[h])).join(",")),
+  ];
+  const blob = new Blob([rows.join("\r\n")], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "intake-requests.csv";
+  a.click();
+  // Delay revocation so the browser has time to start the download before the
+  // object URL is released; immediate revocation can abort the download in some browsers.
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 function showTriage(result) {
   const box = document.getElementById("triage-result");
   box.classList.remove("hidden");
@@ -79,8 +107,12 @@ function showTriage(result) {
 
 async function init() {
   showWelcomeBanner();
-  let requests = await loadRequests();
+  requests = await loadRequests();
   renderQueue(requests);
+
+  document.getElementById("export-csv-btn").addEventListener("click", () => {
+    exportCSV(requests);
+  });
 
   document.getElementById("intake-form").addEventListener("submit", (e) => {
     e.preventDefault();
